@@ -14,9 +14,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Show docker version
-        run: docker --version
-
       - name: Build Docker image
         shell: bash
         run: |
