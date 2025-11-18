@@ -1,0 +1,30 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./db-init.sql:/docker-entrypoint-initdb.d/db-init.sql
+    networks:
+      - appnet
+
+  app:
+    build: .
+    depends_on:
+      - db
+    environment:
+      POSTGRES_HOST: db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "3000:3000"
+    networks:
+      - appnet
+
+volumes:
+  pgdata:
+
+networks:
+  appnet:
