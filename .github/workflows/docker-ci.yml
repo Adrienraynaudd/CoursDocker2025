@@ -20,13 +20,15 @@ jobs:
       - name: Build Docker image
         shell: bash
         run: |
-          IMAGE_NAME="${{ github.repository }}:ci-${{ github.run_id }}"
+          REPO_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+          IMAGE_NAME="$REPO_LOWER:ci-${{ github.run_id }}"
           echo "Building image $IMAGE_NAME"
           docker build -t "$IMAGE_NAME" .
 
       - name: Run tests inside built image
         shell: bash
         run: |
-          IMAGE_NAME="${{ github.repository }}:ci-${{ github.run_id }}"
+          REPO_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+          IMAGE_NAME="$REPO_LOWER:ci-${{ github.run_id }}"
           echo "Running npm test inside $IMAGE_NAME"
           docker run --rm "$IMAGE_NAME" sh -lc "npm test"
